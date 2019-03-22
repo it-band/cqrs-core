@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Abstractions", "src\CQRS-Core.Abstractions\CQRS.Abstractions.csproj", "{E3BC8E4F-AE5F-4D83-96D8-4935ADC514C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Abstractions", "src\CQRS.Abstractions\CQRS.Abstractions.csproj", "{E3BC8E4F-AE5F-4D83-96D8-4935ADC514C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
