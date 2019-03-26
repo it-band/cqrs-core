@@ -23,14 +23,14 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
 
         public override async Task<Result<TOut>> Handle(TIn input)
         {
-            var query = Query.Where(e => e.Id.Equals(input.Id));
+            var value = await Query.Where(e => e.Id.Equals(input.Id)).ProjectTo<TOut>(Mapper.ConfigurationProvider).FirstOrDefaultAsync();
 
-            if (await query.CountAsync() == 0)
+            if (value == null)
             {
                 return Result.NotFound($"Entity '{typeof(TEntity).Name}' with Id: {input.Id} doesn't exist");
             }
 
-            return await query.ProjectTo<TOut>(Mapper.ConfigurationProvider).FirstAsync();
+            return value;
         }
     }
 }
