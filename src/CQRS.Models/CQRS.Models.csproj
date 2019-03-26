@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Authors>IT Band Systems</Authors>
+    <Company>IT Band Systems</Company>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/it-band/cqrs-core</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
