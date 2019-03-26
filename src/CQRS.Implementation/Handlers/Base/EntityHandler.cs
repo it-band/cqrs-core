@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Abstractions;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +11,7 @@ namespace CQRS.Implementation.Handlers.Base
         protected readonly DbContext DbContext;
         protected readonly DbSet<TEntity> DbSet;
         protected IQueryable<TEntity> Query;
-        protected IEnumerable<IAccessFilter<TEntity>> AccessFilters;
+        protected IEnumerable<Models.IAccessFilter<TEntity>> AccessFilters;
 
         private void ApplyPermissionFilters()
         {
@@ -23,7 +21,7 @@ namespace CQRS.Implementation.Handlers.Base
             }
         }
 
-        protected EntityHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> accessFilters)
+        protected EntityHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters)
         {
             DbContext = dbContext;
             AccessFilters = accessFilters;

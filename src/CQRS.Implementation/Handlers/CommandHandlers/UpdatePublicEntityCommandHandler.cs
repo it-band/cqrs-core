@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using CQRS.Implementation.Handlers.Base;
+using CQRS.Implementation.Commands;
 using CQRS.Models;
-using CQRS.Models.Commands;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
@@ -15,7 +13,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
     {
         protected readonly IMapper Mapper;
 
-        protected UpdatePublicEntityCommandHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> permissionFilters, IMapper mapper) : base(dbContext, permissionFilters)
+        protected UpdatePublicEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters, IMapper mapper) : base(dbContext, permissionFilters)
         {
             Mapper = mapper;
         }

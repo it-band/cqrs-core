@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using CQRS.Implementation.Queries;
 using CQRS.Models;
-using CQRS.Models.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.QueryHandlers
@@ -14,7 +14,7 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
         protected readonly IMapper Mapper;
 
 
-        protected GetByIdQueryHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> permissionFilters, IMapper mapper) : base(dbContext, permissionFilters)
+        protected GetByIdQueryHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters, IMapper mapper) : base(dbContext, permissionFilters)
         {
             Mapper = mapper;
         }

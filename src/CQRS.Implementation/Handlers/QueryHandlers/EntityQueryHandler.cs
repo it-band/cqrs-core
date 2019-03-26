@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using CQRS.Abstractions;
 using CQRS.Implementation.Handlers.Base;
+using CQRS.Implementation.Queries;
 using CQRS.Models;
-using CQRS.Models.Queries;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.QueryHandlers
@@ -12,7 +12,7 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
         where TIn : QueryBase<TOut>
         where TEntity : class, IEntity
     {
-        protected EntityQueryHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
+        protected EntityQueryHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
         }
     }

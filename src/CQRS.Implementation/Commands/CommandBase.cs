@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using CQRS.Abstractions.Models;
+using CQRS.Models;
 
-namespace CQRS.Models.Commands
+namespace CQRS.Implementation.Commands
 {
     public class CommandBase<TOut> : ICommand<Task<Result<TOut>>>
     {

@@ -1,4 +1,6 @@
-﻿namespace CQRS.Models.Queries
+﻿using CQRS.Models;
+
+namespace CQRS.Implementation.Queries
 {
     public class GetByPublicIdQuery<TOut, TPublicId> : QueryBase<TOut>, IPublicEntity<TPublicId>
     {

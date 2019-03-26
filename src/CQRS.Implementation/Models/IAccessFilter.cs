@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace CQRS.Models
+namespace CQRS.Implementation.Models
 {
     public interface IAccessFilter<T>
     {

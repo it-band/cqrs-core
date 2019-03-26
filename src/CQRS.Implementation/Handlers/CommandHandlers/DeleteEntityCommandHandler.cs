@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CQRS.Implementation.Handlers.Base;
+using CQRS.Implementation.Commands;
 using CQRS.Models;
-using CQRS.Models.Commands;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
@@ -11,7 +10,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
         where TEntity : class, IEntity<TId>
         where TIn : EntityCommand<bool, TId>
     {
-        public DeleteEntityCommandHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
+        public DeleteEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
         {
         }
 
