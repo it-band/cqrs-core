@@ -47,6 +47,10 @@
     {
         public TObject Data { get; }
 
+        public Result()
+        {
+        }
+
         public Result(TObject data)
         {
             Data = data;
