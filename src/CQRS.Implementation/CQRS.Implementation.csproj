@@ -6,7 +6,7 @@
     <Authors>IT Band System</Authors>
     <Company>IT Band System</Company>
     <RepositoryUrl>https://github.com/it-band/cqrs-core/tree/master/src</RepositoryUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
