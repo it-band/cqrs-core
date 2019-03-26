@@ -1,4 +1,4 @@
-﻿namespace CQRS.Abstractions
+﻿namespace CQRS.Abstractions.Models
 {
     public interface IQuery<TOut>
     {
