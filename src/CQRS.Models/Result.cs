@@ -2,6 +2,8 @@
 {
     public class Result
     {
+        public bool IsSuccess => Failure == null;
+
         public Failure Failure { get; }        
 
         public Result(Failure failure)
