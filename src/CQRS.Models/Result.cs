@@ -45,7 +45,7 @@
 
     public class Result<TObject> : Result
     {
-        public TObject Data { get; }
+        public TObject Data { get; set; }
 
         public Result()
         {
