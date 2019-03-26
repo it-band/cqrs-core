@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using CQRS.Implementation.Queries;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
@@ -21,14 +23,14 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
 
         public override async Task<Result<TOut>> Handle(TIn input)
         {
-            var entity = await Query.FirstOrDefaultAsync(e => e.Id.Equals(input.Id));
+            var query = Query.Where(e => e.Id.Equals(input.Id));
 
-            if (entity == null)
+            if (await query.CountAsync() == 0)
             {
                 return Result.NotFound($"Entity '{typeof(TEntity).Name}' with Id: {input.Id} doesn't exist");
             }
 
-            return Mapper.Map<TOut>(entity);
+            return await query.ProjectTo<TOut>(Mapper.ConfigurationProvider).FirstAsync();
         }
     }
 }
