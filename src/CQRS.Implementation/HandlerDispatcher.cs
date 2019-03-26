@@ -2,23 +2,29 @@
 using System.Threading.Tasks;
 using CQRS.Abstractions;
 using CQRS.Models;
+using SimpleInjector;
 
 namespace CQRS.Implementation
 {
     public class HandlerDispatcher : IHandlerDispatcher
     {
-        private readonly IServiceProvider _provider;
+        protected readonly Container Container;
 
-        public HandlerDispatcher(IServiceProvider provider)
+        public HandlerDispatcher(Container container)
         {
-            _provider = provider;
+            Container = container;
         }
 
         public async Task<Result<TOut>> Handle<TIn, TOut>(TIn input)
         {
-            var handler = (IHandler<TIn, Task<Result<TOut>>>) _provider.GetService(typeof(IHandler<TIn, Task<Result<TOut>>>));
+            if (input == null)
+            {
+                throw new NullReferenceException(typeof(TIn).Name);
+            }
+
+            var handler = (IHandler<TIn, Task<Result<TOut>>>)Container.GetInstance(typeof(IHandler<TIn, Task<Result<TOut>>>));
 
             return await handler.Handle(input);
-        }         
+        }
     }
 }
