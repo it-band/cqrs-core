@@ -10,8 +10,4 @@
     <RepositoryUrl>https://github.com/it-band/cqrs-core/tree/master/src</RepositoryUrl>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CQRS.Abstractions.Models\CQRS.Abstractions.Models.csproj" />
-  </ItemGroup>
-
 </Project>
