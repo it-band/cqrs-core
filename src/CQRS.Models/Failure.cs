@@ -61,7 +61,7 @@ namespace CQRS.Models
 
     public class ValidationFailure : Failure
     {
-        public ValidationError[] ValidationErrors { get; }
+        public ValidationError[] ValidationErrors { get; set; }
 
         public ValidationFailure(ValidationError[] validationErrors) : base("Validation Error")
         {
