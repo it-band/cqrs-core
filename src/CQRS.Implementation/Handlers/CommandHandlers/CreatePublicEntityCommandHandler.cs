@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
     public abstract class CreatePublicEntityCommandHandler<TIn, TEntity, TPublicId> : EntityCommandHandler<TIn, TPublicId, TEntity>
-        where TIn : PublicEntityCommand<TPublicId, TPublicId>
+        where TIn : CommandBase<TPublicId>
         where TEntity : class, IPublicEntity<TPublicId>
     {
         protected readonly IMapper Mapper;
