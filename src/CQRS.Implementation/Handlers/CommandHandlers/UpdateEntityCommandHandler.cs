@@ -2,23 +2,24 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CQRS.Implementation.Commands;
+using CQRS.Implementation.Models;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
-    public abstract class UpdateEntityCommandHandler<TIn, TEntity, TId> : EntityCommandHandler<TIn, TId, TEntity>
-        where TIn : EntityCommand<TId, TId>
+    public abstract class UpdateEntityCommandHandler<TIn, TEntity, TId> : EntityCommandHandler<TIn, bool, TEntity>
+        where TIn : EntityCommand<bool, TId>
         where TEntity : class, IEntity<TId>
     {
         protected readonly IMapper Mapper;
 
-        protected UpdateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
+        protected UpdateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
         {
             Mapper = mapper;
         }
 
-        public override async Task<Result<TId>> Handle(TIn input)
+        public override async Task<Result<bool>> Handle(TIn input)
         {
             var entity = await Query.FirstOrDefaultAsync(e => e.Id.Equals(input.Id));
 
@@ -35,7 +36,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
 
             await OnAfterAction(entity, input);
 
-            return entity.Id;
+            return true;
         }
     }
 }

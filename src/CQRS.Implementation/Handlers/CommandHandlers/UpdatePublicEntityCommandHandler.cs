@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
-    public class UpdatePublicEntityCommandHandler<TIn, TEntity, TPublicId> : EntityCommandHandler<TIn, TPublicId, TEntity>
-        where TIn : PublicEntityCommand<TPublicId, TPublicId>
+    public class UpdatePublicEntityCommandHandler<TIn, TEntity, TPublicId> : EntityCommandHandler<TIn, bool, TEntity>
+        where TIn : PublicEntityCommand<bool, TPublicId>
         where TEntity : class, IPublicEntity<TPublicId>
     {
         protected readonly IMapper Mapper;
@@ -18,7 +18,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
             Mapper = mapper;
         }
 
-        public override async Task<Result<TPublicId>> Handle(TIn input)
+        public override async Task<Result<bool>> Handle(TIn input)
         {
             var entity = await Query.FirstOrDefaultAsync(e => e.PublicId.Equals(input.PublicId));
 
@@ -35,7 +35,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
 
             await OnAfterAction(entity, input);
 
-            return entity.PublicId;
+            return true;
         }
     }
 }
