@@ -7,7 +7,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>IT Band System</Authors>
     <Product>CQRS</Product>
-    <RepositoryUrl>https://github.com/it-band/cqrs-core/tree/master/src</RepositoryUrl>
+    <RepositoryUrl>https://github.com/it-band/cqrs-core</RepositoryUrl>
     <Version>1.0.1</Version>
   </PropertyGroup>
 
