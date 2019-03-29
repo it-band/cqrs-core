@@ -4,7 +4,7 @@
     {
         public bool IsSuccess => Failure == null;
 
-        public Failure Failure { get; }        
+        public Failure Failure { get; set; }        
 
         public Result(Failure failure)
         {     
