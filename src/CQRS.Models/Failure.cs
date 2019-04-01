@@ -51,7 +51,7 @@ namespace CQRS.Models
 
     public class ExceptionFailure : Failure
     {
-        public string StackTrace { get; }
+        public string StackTrace { get; set; }
 
         public ExceptionFailure(Exception exception) : base(exception.Message)
         {
