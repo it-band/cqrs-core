@@ -1,9 +1,8 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.Tasks;
-using System.Transactions;
+using System.Data;
 using CQRS.Abstractions;
-using CQRS.Abstractions.Models;
+using CQRS.Implementation.Commands;
 using CQRS.Implementation.Transactions;
 using CQRS.Models;
 using SimpleInjector;
@@ -11,27 +10,33 @@ using SimpleInjector;
 namespace CQRS.Implementation.Decorators
 {
     public class TransactionHandlerDecorator<TIn, TOut> : HandlerDecoratorBase<TIn, TOut>
-        where TIn : ICommand<TOut>
+        where TIn : CommandBase<TOut>
     {
-        private readonly IsolationLevel _transactionType;
+        private readonly IsolationLevel? _transactionType;
+        private readonly ITransactionAccessor _transactionAccessor;
 
-        public TransactionHandlerDecorator(DecoratorContext decoratorContext, IHandler<TIn, Task<Result<TOut>>> decorated) : base(decorated)
+        public TransactionHandlerDecorator(DecoratorContext decoratorContext, IHandler<TIn, Task<Result<TOut>>> decorated, ITransactionAccessor transactionAccessor) : base(decorated)
         {
+            _transactionAccessor = transactionAccessor;
             _transactionType = decoratorContext.ImplementationType
-                .GetCustomAttribute<TransactionAttribute>()
-                .TransactionType;
+                .GetCustomAttribute<TransactionAttribute>()?.TransactionType;
         }        
 
         public override async Task<Result<TOut>> Handle(TIn input)
         {
-            using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = _transactionType }))
+            if (_transactionType.HasValue)
             {
-                var result = await Decorated.Handle(input);
+                using (var transaction = await _transactionAccessor.BeginTransaction(_transactionType.Value))
+                {
+                    var result = await Decorated.Handle(input);
 
-                scope.Complete();
+                    transaction.Commit();
 
-                return result;
+                    return result;
+                }
             }
+
+            return await Decorated.Handle(input);
         }
     }
 }
