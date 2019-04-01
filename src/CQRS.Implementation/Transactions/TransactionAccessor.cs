@@ -20,4 +20,3 @@ namespace CQRS.Implementation.Transactions
         }
     }
 }
-}
