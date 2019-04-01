@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Abstractions;
-using CQRS.Abstractions.Models;
+using CQRS.Implementation.Commands;
 using CQRS.Implementation.Models;
 using CQRS.Models;
 
 namespace CQRS.Implementation.Decorators
 {
     public class PermissionValidationHandlerDecorator<TIn, TOut> : HandlerDecoratorBase<TIn, TOut>
-        where TIn : ICommand<TOut>
+        where TIn : CommandBase<TOut>
     {
         private readonly IEnumerable<IPermissionValidator<TIn>> _permissionValidators;
 
