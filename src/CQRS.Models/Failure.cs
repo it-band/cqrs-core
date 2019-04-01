@@ -57,6 +57,10 @@ namespace CQRS.Models
         {
             StackTrace = exception.StackTrace;
         }
+
+        public ExceptionFailure(string message) : base(message)
+        {
+        }
     }
 
     public class ValidationFailure : Failure
