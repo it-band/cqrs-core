@@ -18,15 +18,12 @@ namespace CQRS.Models
                     return HttpStatusCode.Forbidden;
                 default:
                     return HttpStatusCode.BadRequest;
-
             }
         }
     }
 
     public class Failure
     {
-       
-
         public string Message { get; }
 
         public Failure(string message)
