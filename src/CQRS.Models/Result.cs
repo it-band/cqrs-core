@@ -25,6 +25,11 @@
             return new NotFoundFailure(message);
         }
 
+        public static Failure Unauthorized(string message)
+        {
+            return new UnauthorizedFailure(message);
+        }
+
         public static Failure Forbidden(string message)
         {
             return new ForbiddenFailure(message);
