@@ -13,7 +13,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
     {
         protected readonly IMapper Mapper;
 
-        protected CreateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
+        protected CreateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
             Mapper = mapper;
         }

@@ -14,7 +14,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
     {
         protected readonly IMapper Mapper;
 
-        protected UpdateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
+        protected UpdateEntityCommandHandler(DbContext dbContext, IMapper mapper, IEnumerable<IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
             Mapper = mapper;
         }

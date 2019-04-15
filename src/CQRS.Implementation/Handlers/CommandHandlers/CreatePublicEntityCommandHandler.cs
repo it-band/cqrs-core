@@ -14,7 +14,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
     {
         protected readonly IMapper Mapper;
 
-        protected CreatePublicEntityCommandHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> permissionFilters, IMapper mapper) : base(dbContext, permissionFilters)
+        protected CreatePublicEntityCommandHandler(DbContext dbContext, IEnumerable<IAccessFilter<TEntity>> accessFilters, IMapper mapper) : base(dbContext, accessFilters)
         {
             Mapper = mapper;
         }

@@ -12,7 +12,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
         where TEntity : class, IPublicEntity<TPublicId>
 
     {
-        public DeletePublicEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> permissionFilters) : base(dbContext, permissionFilters)
+        public DeletePublicEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
         }
 
