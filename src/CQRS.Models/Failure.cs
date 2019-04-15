@@ -12,12 +12,14 @@ namespace CQRS.Models
             {
                 case ExceptionFailure _:
                     return HttpStatusCode.InternalServerError;
-                case NotFoundFailure _:
-                    return HttpStatusCode.NotFound;
-                case ForbiddenFailure _:
-                    return HttpStatusCode.Forbidden;
                 default:
                     return HttpStatusCode.BadRequest;
+                case UnauthorizedFailure _:
+                    return HttpStatusCode.Unauthorized;
+                case ForbiddenFailure _:
+                    return HttpStatusCode.Forbidden;
+                case NotFoundFailure _:
+                    return HttpStatusCode.NotFound;
             }
         }
     }
@@ -35,6 +37,13 @@ namespace CQRS.Models
     public class NotFoundFailure : Failure
     {
         public NotFoundFailure(string message) : base(message)
+        {
+        }
+    }
+
+    public class UnauthorizedFailure : Failure
+    {
+        public UnauthorizedFailure(string message) : base(message)
         {
         }
     }
