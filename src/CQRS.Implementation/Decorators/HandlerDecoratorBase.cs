@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CQRS.Abstractions;
 using CQRS.Models;
+using SimpleInjector;
 
 namespace CQRS.Implementation.Decorators
 {
@@ -9,7 +10,7 @@ namespace CQRS.Implementation.Decorators
         protected readonly IHandler<TIn, Task<Result<TOut>>> Decorated;
 
         protected HandlerDecoratorBase(IHandler<TIn, Task<Result<TOut>>> decorated)
-        {
+        {            
             Decorated = decorated;
         }
 

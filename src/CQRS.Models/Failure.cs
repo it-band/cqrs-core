@@ -26,7 +26,7 @@ namespace CQRS.Models
 
     public class Failure
     {
-        public string Message { get; }
+        public string Message { get; set; }
 
         public Failure(string message)
         {
