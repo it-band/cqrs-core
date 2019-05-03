@@ -15,6 +15,11 @@
         {
         }
 
+        public static Result Success()
+        {
+            return new Result();
+        }
+
         public static Failure Fail(string message)
         {
             return new Failure(message);
