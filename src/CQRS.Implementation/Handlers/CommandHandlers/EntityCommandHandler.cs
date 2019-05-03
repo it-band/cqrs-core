@@ -36,14 +36,14 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
             ApplyAccessFilters();
         }
 
-        protected virtual Task OnBeforeAction(TEntity entity, TIn input)
+        protected virtual Task<Result> OnBeforeAction(TEntity entity, TIn input)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(Result.Success());
         }
 
-        protected virtual Task OnAfterAction(TEntity entity, TIn input)
+        protected virtual Task<Result> OnAfterAction(TEntity entity, TIn input)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(Result.Success());
         }
 
         public abstract Task<Result<TOut>> Handle(TIn input);

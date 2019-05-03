@@ -29,11 +29,21 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
 
             entity = Mapper.Map(input, entity);
 
-            await OnBeforeAction(entity, input);
+            var onBeforeActionResult = await OnBeforeAction(entity, input);
+
+            if (!onBeforeActionResult.IsSuccess)
+            {
+                return onBeforeActionResult.Failure;
+            }
 
             await DbContext.SaveChangesAsync();
 
-            await OnAfterAction(entity, input);
+            var onAfterActionResult = await OnAfterAction(entity, input);
+
+            if (!onAfterActionResult.IsSuccess)
+            {
+                return onAfterActionResult.Failure;
+            }
 
             return true;
         }

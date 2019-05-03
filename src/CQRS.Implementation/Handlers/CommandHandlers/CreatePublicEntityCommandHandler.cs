@@ -23,13 +23,23 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
         {
             var entity = Mapper.Map<TEntity>(input);
 
-            await OnBeforeAction(entity, input);
+            var onBeforeActionResult = await OnBeforeAction(entity, input);
+
+            if (!onBeforeActionResult.IsSuccess)
+            {
+                return onBeforeActionResult.Failure;
+            }
 
             await DbSet.AddAsync(entity);
 
             await DbContext.SaveChangesAsync();
 
-            await OnAfterAction(entity, input);
+            var onAfterActionResult = await OnAfterAction(entity, input);
+
+            if (!onAfterActionResult.IsSuccess)
+            {
+                return onAfterActionResult.Failure;
+            }
 
             return entity.PublicId;
         }
