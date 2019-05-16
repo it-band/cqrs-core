@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CQRS.Abstractions.Models;
 using CQRS.Implementation.Commands;
 using CQRS.Implementation.Models;
 using CQRS.Models;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
     public abstract class EntityCommandHandler<TIn, TOut, TEntity> : CommandHandlerBase<TIn, TOut>
-        where TIn : CommandBase<TOut>
+        where TIn : ICommand<Task<Result<TOut>>>
         where TEntity : class, IEntity
     {
 

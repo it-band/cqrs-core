@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using CQRS.Abstractions.Models;
 using CQRS.Implementation.Models;
 using CQRS.Implementation.Queries;
 using CQRS.Models;
@@ -8,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CQRS.Implementation.Handlers.QueryHandlers
 {
     public abstract class EntityQueryHandler<TIn, TOut, TEntity> : QueryHandlerBase<TIn, TOut>
-        where TIn : QueryBase<TOut>
+        where TIn : IQuery<Task<Result<TOut>>>
         where TEntity : class, IEntity
     {
         protected readonly DbContext DbContext;
