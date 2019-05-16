@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CQRS.Abstractions;
-using CQRS.Abstractions.Models;
+using CQRS.Implementation.Commands;
 using CQRS.Implementation.Models;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
-    public abstract class EntityCommandHandler<TIn, TOut, TEntity> : ICommandHandler<TIn, Task<Result<TOut>>>
-        where TIn : ICommand<Task<Result<TOut>>>
+    public abstract class EntityCommandHandler<TIn, TOut, TEntity> : CommandHandlerBase<TIn, TOut>
+        where TIn : CommandBase<TOut>
         where TEntity : class, IEntity
     {
 
@@ -45,7 +44,5 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
         {
             return Task.FromResult(Result.Success());
         }
-
-        public abstract Task<Result<TOut>> Handle(TIn input);
     }
 }

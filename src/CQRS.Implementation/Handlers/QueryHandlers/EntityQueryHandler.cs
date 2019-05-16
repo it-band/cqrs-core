@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Abstractions;
-using CQRS.Abstractions.Models;
 using CQRS.Implementation.Models;
+using CQRS.Implementation.Queries;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.QueryHandlers
 {
-    public abstract class EntityQueryHandler<TIn, TOut, TEntity> : IQueryHandler<TIn, Task<Result<TOut>>>
-        where TIn : IQuery<Task<Result<TOut>>>
+    public abstract class EntityQueryHandler<TIn, TOut, TEntity> : QueryHandlerBase<TIn, TOut>
+        where TIn : QueryBase<TOut>
         where TEntity : class, IEntity
     {
         protected readonly DbContext DbContext;
@@ -34,7 +32,5 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
             Query = DbSet;
             ApplyAccessFilters();
         }
-
-        public abstract Task<Result<TOut>> Handle(TIn input);
     }
 }
