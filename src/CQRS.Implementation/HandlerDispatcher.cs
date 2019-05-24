@@ -27,22 +27,22 @@ namespace CQRS.Implementation
             return await handler.Handle(input);
         }
 
-        public async Task<Result<object>> Handle(Type In, Type Out, object input)
+        public async Task<Result<object>> Handle(Type In, object input)
         {
             if (input == null)
             {
                 throw new NullReferenceException(In.Name);
             }
 
-            var outType = typeof(Result<>).MakeGenericType(Out);
-
-            var handlerType = typeof(IHandler<,>).MakeGenericType(In, outType);
+            var handlerType = typeof(IHandler<,>).MakeGenericType(In, typeof(Task<Result<object>>));
 
             var handler = _container.GetInstance(handlerType);
 
             var handleMethod = handlerType.GetMethod("Handle");
+            
+            var resultTask = (Task<Result<object>>)handleMethod.Invoke(handler, new[] {input});
 
-            return await (Task<Result<object>>)handleMethod.Invoke(handler, new[] { input });
+            return await resultTask;
         }
     }
 }

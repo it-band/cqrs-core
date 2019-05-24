@@ -7,6 +7,6 @@ namespace CQRS.Implementation
     public interface IHandlerDispatcher
     {
         Task<Result<TOut>> Handle<TIn, TOut>(TIn input);
-        Task<Result<object>> Handle(Type In, Type Out, object input);
+        Task<Result<object>> Handle(Type In, object input);
     }
 }
