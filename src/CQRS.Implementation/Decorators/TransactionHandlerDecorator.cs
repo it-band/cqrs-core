@@ -30,7 +30,10 @@ namespace CQRS.Implementation.Decorators
                 {
                     var result = await Decorated.Handle(input);
 
-                    transaction.Commit();
+                    if (result.IsSuccess)
+                    {
+                        transaction.Commit();
+                    }                      
 
                     return result;
                 }
