@@ -8,7 +8,6 @@ using CQRS.Models;
 namespace CQRS.Implementation.Decorators
 {
     public class PermissionValidationHandlerDecorator<TIn, TOut> : HandlerDecoratorBase<TIn, TOut>
-        where TIn : CommandBase<TOut>
     {
         private readonly IEnumerable<IPermissionValidator<TIn>> _permissionValidators;
 
