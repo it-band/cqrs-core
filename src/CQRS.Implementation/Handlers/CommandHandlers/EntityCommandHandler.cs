@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Abstractions.Models;
-using CQRS.Implementation.Commands;
 using CQRS.Implementation.Models;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
