@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
-    public class DeleteEntityCommandHandler<TIn, TEntity, TId> : EntityCommandHandler<TIn, bool, TEntity>
+    public abstract class DeleteEntityCommandHandler<TIn, TEntity, TId> : EntityCommandHandler<TIn, bool, TEntity>
         where TEntity : class, IEntity<TId>
         where TIn : EntityCommand<bool, TId>
     {
-        public DeleteEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
+        protected DeleteEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
         }
 
@@ -23,9 +23,23 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
                 return Result.NotFound($"Entity '{typeof(TEntity).Name}' with Id: {input.Id} doesn't exist");
             }
 
-            DbContext.Remove(entity);
+            var onBeforeActionResult = await OnBeforeAction(entity, input);
+
+            if (!onBeforeActionResult.IsSuccess)
+            {
+                return onBeforeActionResult.Failure;
+            }
+
+            DbSet.Remove(entity);
 
             await DbContext.SaveChangesAsync();
+
+            var onAfterActionResult = await OnAfterAction(entity, input);
+
+            if (!onAfterActionResult.IsSuccess)
+            {
+                return onAfterActionResult.Failure;
+            }
 
             return true;
         }

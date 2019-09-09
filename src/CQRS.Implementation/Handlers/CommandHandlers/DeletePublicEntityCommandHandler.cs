@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Implementation.Commands;
-using CQRS.Implementation.Handlers.Base;
 using CQRS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CQRS.Implementation.Handlers.CommandHandlers
 {
-    public class DeletePublicEntityCommandHandler<TIn, TEntity, TPublicId> : EntityCommandHandler<TIn, bool, TEntity>
+    public abstract class DeletePublicEntityCommandHandler<TIn, TEntity, TPublicId> : EntityCommandHandler<TIn, bool, TEntity>
         where TIn : PublicEntityCommand<bool, TPublicId>
         where TEntity : class, IPublicEntity<TPublicId>
 
     {
-        public DeletePublicEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
+        protected DeletePublicEntityCommandHandler(DbContext dbContext, IEnumerable<Models.IAccessFilter<TEntity>> accessFilters) : base(dbContext, accessFilters)
         {
         }
 
@@ -25,9 +24,23 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
                 return Result.NotFound($"Entity '{typeof(TEntity).Name} with Public Id: {input.PublicId} doesn't exist");
             }
 
+            var onBeforeActionResult = await OnBeforeAction(entity, input);
+
+            if (!onBeforeActionResult.IsSuccess)
+            {
+                return onBeforeActionResult.Failure;
+            }
+
             DbSet.Remove(entity);
 
             await DbContext.SaveChangesAsync();
+
+            var onAfterActionResult = await OnAfterAction(entity, input);
+
+            if (!onAfterActionResult.IsSuccess)
+            {
+                return onAfterActionResult.Failure;
+            }
 
             return true;
         }
