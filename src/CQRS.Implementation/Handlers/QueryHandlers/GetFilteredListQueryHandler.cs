@@ -26,9 +26,8 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
             Mapper = mapper;
         }
 
-        protected virtual void BuildQuery(TIn input)
+        protected virtual void BuildExpression(TIn input)
         {
-            Query = Query.Where(Expression);
         }
 
         protected virtual void Sort(Sorting sorting)
@@ -37,7 +36,9 @@ namespace CQRS.Implementation.Handlers.QueryHandlers
 
         public override async Task<Result<PagedList<TOut>>> Handle(TIn input)
         {
-            BuildQuery(input);
+            BuildExpression(input);
+
+            Query = Query.Where(Expression);
 
             Sort(input.Sorting);
 
