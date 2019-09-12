@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace CQRS.Models
 {
@@ -21,8 +19,8 @@ namespace CQRS.Models
         }
 
         public async Task ExecuteResultAsync(ActionContext context)
-        {
-            var result = new JsonResult(Value, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() } )
+        {            
+            var result = new JsonResult(Value)
             {
                 StatusCode = (int)(Value.Failure?.GetStatusCode() ?? HttpStatusCode.OK)
             };
