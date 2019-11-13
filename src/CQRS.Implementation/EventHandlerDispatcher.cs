@@ -21,11 +21,11 @@ namespace CQRS.Implementation
 
         public async Task Handle<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            var eventHandlers = _container.GetAllInstances<IEventHandler<TEvent>>();
+            var eventHandlers = _container.GetTypesToRegister<IEventHandler<TEvent>>();
 
             foreach (var eventHandler in eventHandlers)
             {
-                _backgroundJobClient.Create(new Job(eventHandler.GetType(), eventHandler.GetType().GetMethod("Handle"), @event), new EnqueuedState());
+                _backgroundJobClient.Create(new Job(eventHandler, eventHandler.GetMethod("Handle"), @event), new EnqueuedState());
             }
 
             await Task.CompletedTask;
