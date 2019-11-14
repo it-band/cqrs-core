@@ -2,5 +2,6 @@
 {
     public interface IEvent
     {
+        string QueueName { get; set; }
     }
 }

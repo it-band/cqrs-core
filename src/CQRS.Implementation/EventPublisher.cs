@@ -1,5 +1,7 @@
 ﻿using CQRS.Abstractions.Models;
 using Hangfire;
+using Hangfire.Common;
+using Hangfire.States;
 
 namespace CQRS.Implementation
 {
@@ -8,9 +10,16 @@ namespace CQRS.Implementation
     /// </summary>
     public class EventPublisher : IEventPublisher
     {
-        public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        private readonly IBackgroundJobClient _backgroundJobClient;
+
+        public EventPublisher(IBackgroundJobClient backgroundJobClient)
         {
-            BackgroundJob.Enqueue<IEventHandlerDispatcher>(dispatcher => dispatcher.Handle(@event));
+            _backgroundJobClient = backgroundJobClient;
+        }
+
+        public virtual void Publish<TEvent>(TEvent @event) where TEvent : IEvent
+        {
+            _backgroundJobClient.Create(new Job(typeof(IEventHandlerDispatcher), typeof(IEventHandlerDispatcher).GetMethod("Handle"), @event), new EnqueuedState(@event.QueueName));
         }
     }
 }

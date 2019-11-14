@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CQRS.Abstractions;
 using CQRS.Abstractions.Models;
-using Hangfire;
-using Hangfire.Common;
-using Hangfire.States;
 using SimpleInjector;
 
 namespace CQRS.Implementation
@@ -11,24 +9,24 @@ namespace CQRS.Implementation
     public class EventHandlerDispatcher : IEventHandlerDispatcher
     {
         private readonly Container _container;
-        private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public EventHandlerDispatcher(Container container, IBackgroundJobClient backgroundJobClient)
+        public EventHandlerDispatcher(Container container)
         {
             _container = container;
-            _backgroundJobClient = backgroundJobClient;
         }
 
-        public async Task Handle<TEvent>(TEvent @event) where TEvent : IEvent
+        public virtual async Task Handle<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            var eventHandlers = _container.GetTypesToRegister<IEventHandler<TEvent>>();
+            var eventHandlers = _container.GetAllInstances<IEventHandler<TEvent>>();
+
+            var eventHandlersTasks = new List<Task>();
 
             foreach (var eventHandler in eventHandlers)
             {
-                _backgroundJobClient.Create(new Job(eventHandler, eventHandler.GetMethod("Handle"), @event), new EnqueuedState());
+                eventHandlersTasks.Add(eventHandler.Handle(@event));
             }
 
-            await Task.CompletedTask;
+            await Task.WhenAll(eventHandlersTasks);
         }
     }
 }
