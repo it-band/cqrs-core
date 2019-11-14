@@ -31,8 +31,10 @@ namespace CQRS.Implementation.Decorators
                     transaction.Commit();
                 }
             }
-
-            await Decorated.Handle(@event);
+            else
+            {
+                await Decorated.Handle(@event);
+            }            
         }
     }
 }

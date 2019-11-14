@@ -19,7 +19,9 @@ namespace CQRS.Implementation
 
         public virtual void Publish<TEvent>(TEvent @event) where TEvent : IEvent
         {
-            _backgroundJobClient.Create(new Job(typeof(IEventHandlerDispatcher), typeof(IEventHandlerDispatcher).GetMethod("Handle"), @event), new EnqueuedState(@event.QueueName));
+            var method = typeof(IEventHandlerDispatcher).GetMethod("Handle")?.MakeGenericMethod(typeof(TEvent));
+            
+            _backgroundJobClient.Create(new Job(method, @event), new EnqueuedState(@event.QueueName));
         }
     }
 }
