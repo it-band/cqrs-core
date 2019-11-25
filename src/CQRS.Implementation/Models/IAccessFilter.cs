@@ -1,9 +1,9 @@
-﻿using System.Linq;
+﻿using CQRS.Models;
 
 namespace CQRS.Implementation.Models
 {
-    public interface IAccessFilter<T>
+    public interface IAccessFilter<T> : IQueryableFilter<T>
+        where T : class
     {
-        IQueryable<T> Apply(IQueryable<T> query);
     }
 }
