@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Abstractions;
-using CQRS.Implementation.Commands;
 using CQRS.Implementation.Models;
 using CQRS.Models;
 
