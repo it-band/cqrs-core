@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Abstractions;
 using CQRS.Abstractions.Models;
@@ -37,7 +36,7 @@ namespace CQRS.Implementation
                     eventHandlerType = decorator.DecoratorsChain().Last().GetType();
                 }
 
-                _backgroundJobClient.Create(new Job(eventHandlerType, eventHandlerType.GetMethod("Handle"), @event), new EnqueuedState());
+                _backgroundJobClient.Create(new Job(eventHandlerType, eventHandlerType.GetMethod("Handle"), @event), new EnqueuedState(@event.QueueName));
             }
 
             await Task.CompletedTask;
