@@ -33,7 +33,7 @@ namespace CQRS.Implementation
 
                 if (eventHandler is IDecorator<IEventHandler<TEvent>> decorator)
                 {
-                    eventHandlerType = decorator.DecoratorsChain().Last().GetType();
+                    eventHandlerType = decorator.DecoratorsChain().Last().Decorated.GetType();
                 }
 
                 _backgroundJobClient.Create(new Job(eventHandlerType, eventHandlerType.GetMethod("Handle"), @event), new EnqueuedState(@event.QueueName));
