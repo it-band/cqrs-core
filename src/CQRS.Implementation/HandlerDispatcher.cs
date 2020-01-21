@@ -15,11 +15,23 @@ namespace CQRS.Implementation
             _container = container;
         }
 
+        public async Task<Result> Handle<TIn>(TIn input)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            var handler = (IHandler<TIn, Task<Result>>)_container.GetInstance(typeof(IHandler<TIn, Task<Result>>));
+
+            return await handler.Handle(input);
+        }
+
         public async Task<Result<TOut>> Handle<TIn, TOut>(TIn input)
         {
             if (input == null)
             {
-                throw new NullReferenceException(typeof(TIn).Name);
+                throw new ArgumentNullException(nameof(input));
             }
 
             var handler = (IHandler<TIn, Task<Result<TOut>>>)_container.GetInstance(typeof(IHandler<TIn, Task<Result<TOut>>>));

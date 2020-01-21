@@ -1,25 +1,25 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace CQRS.Models
 {
     public static class FailureExtensions
     {
-        public static HttpStatusCode GetStatusCode(this Failure failure)
+        public static int GetStatusCode(this Failure failure)
         {
             switch (failure)
             {
                 case ExceptionFailure _:
-                    return HttpStatusCode.InternalServerError;
+                    return StatusCodes.Status500InternalServerError;
                 default:
-                    return HttpStatusCode.BadRequest;
+                    return StatusCodes.Status400BadRequest;
                 case UnauthorizedFailure _:
-                    return HttpStatusCode.Unauthorized;
+                    return StatusCodes.Status401Unauthorized;
                 case ForbiddenFailure _:
-                    return HttpStatusCode.Forbidden;
+                    return StatusCodes.Status403Forbidden;
                 case NotFoundFailure _:
-                    return HttpStatusCode.NotFound;
+                    return StatusCodes.Status404NotFound;
             }
         }
     }

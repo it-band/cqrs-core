@@ -29,5 +29,15 @@ namespace CQRS.IntegrationTests.HandlerDispatcherTests
             var result = await handlerDispatcher.Handle(commandType, new TestCommand());
             Assert.True((bool)result.Data);
         }
+
+        [Fact]
+        public async Task HandlerDispatcher_CommandWithVoidResult_DispatchingSuccess()
+        {
+            var handlerDispatcher = new HandlerDispatcher(_container);
+
+            var result = await handlerDispatcher.Handle(new TestCommandWithVoidResult());
+
+            Assert.True(result.IsSuccess);
+        }
     }
 }

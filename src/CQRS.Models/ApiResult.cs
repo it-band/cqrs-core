@@ -6,23 +6,26 @@ namespace CQRS.Models
 {
     public class ApiResult : IActionResult
     {
-        public Result Value { get; set; }
+        public object Value { get; set; }
 
-        public ApiResult(Result value)
+        public int? StatusCode { get; set; }
+
+        public ApiResult(object value, int? statusCode = null)
         {
             Value = value;
+            StatusCode = statusCode;
         }
 
         public static implicit operator ApiResult(Result value)
         {
-            return new ApiResult(value);
+            return new ApiResult(value, value.Failure?.GetStatusCode());
         }
 
         public async Task ExecuteResultAsync(ActionContext context)
         {            
             var result = new JsonResult(Value)
             {
-                StatusCode = (int)(Value.Failure?.GetStatusCode() ?? HttpStatusCode.OK)
+                StatusCode = StatusCode
             };
 
             await result.ExecuteResultAsync(context);

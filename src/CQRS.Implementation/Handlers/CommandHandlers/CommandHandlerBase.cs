@@ -10,4 +10,10 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
     {
         public abstract Task<Result<TOut>> Handle(TIn input);
     }
+
+    public abstract class CommandHandlerBase<TIn> : ICommandHandler<TIn, Task<Result>>
+        where TIn : ICommand<Task<Result>>
+    {
+        public abstract Task<Result> Handle(TIn input);
+    }
 }

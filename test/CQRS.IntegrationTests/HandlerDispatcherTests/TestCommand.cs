@@ -16,4 +16,17 @@ namespace CQRS.IntegrationTests.HandlerDispatcherTests
             return await Task.FromResult(true);
         }
     }
+
+    public class TestCommandWithVoidResult : CommandBase
+    {
+
+    }
+
+    public class TestCommandWithVoidResultHandler : CommandHandlerBase<TestCommandWithVoidResult>
+    {
+        public override async Task<Result> Handle(TestCommandWithVoidResult input)
+        {
+            return await Task.FromResult(Result.Success());
+        }
+    }
 }

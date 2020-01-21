@@ -7,4 +7,9 @@ namespace CQRS.Implementation.Commands
     public class CommandBase<TOut> : ICommand<Task<Result<TOut>>>
     {
     }
+
+    public class CommandBase : ICommand<Task<Result>>
+    {
+
+    }
 }
