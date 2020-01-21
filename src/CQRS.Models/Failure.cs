@@ -4,26 +4,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace CQRS.Models
 {
-    public static class FailureExtensions
-    {
-        public static int GetStatusCode(this Failure failure)
-        {
-            switch (failure)
-            {
-                case ExceptionFailure _:
-                    return StatusCodes.Status500InternalServerError;
-                default:
-                    return StatusCodes.Status400BadRequest;
-                case UnauthorizedFailure _:
-                    return StatusCodes.Status401Unauthorized;
-                case ForbiddenFailure _:
-                    return StatusCodes.Status403Forbidden;
-                case NotFoundFailure _:
-                    return StatusCodes.Status404NotFound;
-            }
-        }
-    }
-
     public class Failure
     {
         public string Message { get; set; }
