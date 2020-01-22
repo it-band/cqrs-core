@@ -1,5 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace CQRS.Models
 {
@@ -22,25 +25,35 @@ namespace CQRS.Models
 
         public async Task ExecuteResultAsync(ActionContext context)
         {            
-            var result = new JsonResult(Value)
-            {
-                StatusCode = StatusCode
-            };
+            if(context == null)
+                throw new ArgumentNullException(nameof(context));
 
-            await result.ExecuteResultAsync(context);
+            await context.HttpContext.RequestServices.GetRequiredService<ApiResultExecutor>().ExecuteAsync(context, this);
         }
+    }
+
+    public class ApiResultOptions
+    {
+        public Func<ApiResult, int> StatusCodeAccessor { get; set; } = result => result.StatusCode ?? result.Value.GetStatusCode();
     }
 
     public class ApiResultExecutor
     {
+        private readonly IOptions<ApiResultOptions> _options;
+
+        public ApiResultExecutor(IOptions<ApiResultOptions> options)
+        {
+            _options = options;
+        }
+
         public virtual async Task ExecuteAsync(ActionContext context, ApiResult result)
         {
             var jsonResult = new JsonResult(result.Value)
             {
-                StatusCode = result.StatusCode ?? result.Value.GetStatusCode()
+                StatusCode = _options.Value.StatusCodeAccessor(result)
             };
 
-            await result.ExecuteResultAsync(context);
+            await jsonResult.ExecuteResultAsync(context);
         }
     }
 }
