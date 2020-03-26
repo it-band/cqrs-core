@@ -42,4 +42,38 @@ namespace CQRS.Implementation.Decorators
             return await Decorated.Handle(input);
         }
     }
+
+    public class TransactionHandlerDecorator<TIn> : HandlerDecoratorBase<TIn>
+        where TIn : CommandBase
+    {
+        private readonly IsolationLevel? _transactionType;
+        private readonly ITransactionAccessor _transactionAccessor;
+
+        public TransactionHandlerDecorator(DecoratorContext decoratorContext, IHandler<TIn, Task<Result>> decorated, ITransactionAccessor transactionAccessor) : base(decorated)
+        {
+            _transactionAccessor = transactionAccessor;
+            _transactionType = decoratorContext.ImplementationType
+                .GetCustomAttribute<TransactionAttribute>()?.TransactionType;
+        }
+
+        public override async Task<Result> Handle(TIn input)
+        {
+            if (_transactionType.HasValue)
+            {
+                using (var transaction = await _transactionAccessor.BeginTransaction(_transactionType.Value))
+                {
+                    var result = await Decorated.Handle(input);
+
+                    if (result.IsSuccess)
+                    {
+                        transaction.Commit();
+                    }
+
+                    return result;
+                }
+            }
+
+            return await Decorated.Handle(input);
+        }
+    }
 }

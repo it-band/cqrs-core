@@ -30,4 +30,29 @@ namespace CQRS.Implementation.Decorators
             return await Decorated.Handle(input);
         }
     }
+
+    public class PermissionValidationHandlerDecorator<TIn> : HandlerDecoratorBase<TIn>
+    {
+        private readonly IEnumerable<IPermissionValidator<TIn>> _permissionValidators;
+
+        public PermissionValidationHandlerDecorator(IHandler<TIn, Task<Result>> decorated, IEnumerable<IPermissionValidator<TIn>> permissionValidators) : base(decorated)
+        {
+            _permissionValidators = permissionValidators;
+        }
+
+        public override async Task<Result> Handle(TIn input)
+        {
+            foreach (var permissionValidator in _permissionValidators)
+            {
+                var result = await permissionValidator.Validate(input);
+
+                if (!result.IsValid)
+                {
+                    return Result.Forbidden(result.ToString());
+                }
+            }
+
+            return await Decorated.Handle(input);
+        }
+    }
 }

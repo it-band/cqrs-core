@@ -9,7 +9,5 @@ namespace CQRS.Implementation
         Task<Result<TOut>> Handle<TIn, TOut>(TIn input);
 
         Task<Result> Handle<TIn>(TIn input);
-
-        Task<Result<object>> Handle(Type In, object input);
     }
 }
