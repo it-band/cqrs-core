@@ -18,11 +18,11 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
         protected IQueryable<TEntity> Query;
         protected IEnumerable<IAccessFilter<TEntity>> AccessFilters;
 
-        private void ApplyAccessFilters()
+        private async Task ApplyAccessFilters()
         {
             foreach (var accessFilter in AccessFilters)
             {
-                Query = accessFilter.Apply(Query);
+                Query = await accessFilter.Apply(Query);
             }
         }
 
@@ -32,7 +32,7 @@ namespace CQRS.Implementation.Handlers.CommandHandlers
             AccessFilters = accessFilters;
             DbSet = dbContext.Set<TEntity>();
             Query = DbSet;
-            ApplyAccessFilters();
+            Task.FromResult(ApplyAccessFilters());
         }
 
         protected virtual Task<Result> OnBeforeAction(TEntity entity, TIn input)
