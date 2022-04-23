@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>CQRS.Abstractions</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Authors>IT Band System</Authors>
+    <Authors>IDS Group</Authors>
     <Product>CQRS</Product>
     <RepositoryUrl>https://github.com/it-band/cqrs-core</RepositoryUrl>
-    <Version>1.0.6</Version>
+    <Version>2.0.0</Version>
+    <Company>IDS Group</Company>
   </PropertyGroup>
 
 </Project>

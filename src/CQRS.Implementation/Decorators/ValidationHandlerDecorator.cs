@@ -18,7 +18,7 @@ namespace CQRS.Implementation.Decorators
 
         public override async Task<Result<TOut>> Handle(TIn input)
         {
-            var context = new ValidationContext(input);
+            var context = new ValidationContext<TIn>(input);
 
             var failures = _validators
                 .Select(async v => await v.ValidateAsync(context))
@@ -46,7 +46,7 @@ namespace CQRS.Implementation.Decorators
 
         public override async Task<Result> Handle(TIn input)
         {
-            var context = new ValidationContext(input);
+            var context = new ValidationContext<TIn>(input);
 
             var failures = _validators
                 .Select(async v => await v.ValidateAsync(context))
